@@ -3,7 +3,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#edffdd] p-3 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#edffdd] p-2 text-center">
       <img
         className="w-[50px]"
         src="https://i.ibb.co/kxtWZwg/Screenshot-2024-03-22-at-5-14-50-PM.png"
