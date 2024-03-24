@@ -44,9 +44,6 @@ html {
 
 body {
   font-family: var(--body-font);
-  background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
-  background-size: cover;
-  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,23 +61,30 @@ body {
   position: fixed;
   right: 0;
   top: 0;
-  max-width: 100%;
   width: 100%;
   height: 100%;
+  background-size: cover;
+  background-position: center;
 
   video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background-size: cover;
+    background-position: center;
   }
 }
 
-img {
+.video {
+  width: 100%;
+}
+
+video img {
   max-width: 100%;
 }
 
 .app {
-  background-color: var(--theme-bg-color);
+  background-color: rgba(149, 234, 255, 0.206);
   max-width: 1250px;
   max-height: 95vh;
   height: 95vh;
