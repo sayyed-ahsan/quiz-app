@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
 body {
   margin: 0;
@@ -15,4 +16,262 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+:root {
+  --theme-bg-color: rgba(16 18 27 / 40%);
+  --border-color: rgba(113 119 144 / 25%);
+  --theme-color: #f9fafb;
+  --inactive-color: rgb(113 119 144 / 78%);
+  --body-font: "Poppins", sans-serif;
+  --hover-menu-bg: rgba(12 15 25 / 30%);
+  --content-title-color: #999ba5;
+  --content-bg: rgb(146 151 179 / 13%);
+  --button-inactive: rgb(249 250 251 / 55%);
+  --dropdown-bg: #21242d;
+  --dropdown-hover: rgb(42 46 60);
+  --popup-bg: rgb(22 25 37);
+  --search-bg: #14162b;
+  --overlay-bg: rgba(36, 39, 59, 0.3);
+  --scrollbar-bg: rgb(1 2 3 / 40%);
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--body-font);
+  background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  width: 100%;
+  height: 100vh;
+
+  @media screen and (max-width: 480px) {
+    padding: 0.8em;
+  }
+}
+
+.video-bg {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+.app {
+  background-color: var(--theme-bg-color);
+  max-width: 1250px;
+  max-height: 95vh;
+  height: 95vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.settingDiv {
+  background-color: rgba(255, 255, 255, 0.148);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 35px;
+  right: 35px;
+  padding: 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.howToPlayModalDiv {
+  max-width: 550px;
+  width: 100%;
+  max-height: 600px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(135, 135, 135, 0.281);
+  padding: 20px;
+  border-radius: 6px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  /* z-index: 99; */
+}
+
+.rotate-icon {
+  transform: rotate(-60deg);
+  transition: transform 0.5s ease;
+}
+
+.rotate-icon-click {
+  transform: rotate(60deg);
+  transition: transform 0.5s ease;
+}
+
+
+.text1 {
+  color: white;
+  font-weight: 600;
+  animation-name: text;
+  animation-duration: 2.4s;
+}
+
+
+@keyframes text {
+  0% {
+    color: rgb(88, 86, 86);
+  }
+
+  50% {
+    letter-spacing: 8px;
+  }
+
+}
+
+.text2 {
+  animation-name: text2;
+  animation-duration: 2.9s;
+}
+
+
+@keyframes text2 {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    letter-spacing: 20%;
+  }
+}
+
+.btn {
+  position: relative;
+  display: inline-block;
+  border: none;
+  border-radius: 50px;
+  background: none;
+  padding: 25px 75px;
+}
+
+.btn a {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, .05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, .2);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-decoration: none;
+  overflow: hidden;
+  text-transform: uppercase;
+  transition: all .3s ease-in-out;
+  backdrop-filter: blur(15px);
+}
+
+.btn:hover a {
+  letter-spacing: 3px;
+  color: #000000;
+  font-weight: 600;
+}
+
+.btn a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+  transform: skewX(40deg) translateX(0);
+  transition: all .5s ease-out;
+}
+
+.btn:hover a::before {
+  transform: skewX(40deg) translateX(120%);
+}
+
+.btn::before,
+.btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0px;
+  height: 0px;
+  border-radius: 10px;
+  background: #15ffff;
+  transition: all .3s ease-in-out;
+  transition-delay: .1s;
+  z-index: -1;
+}
+
+.btn::before {
+  bottom: -5px;
+}
+
+.btn::after {
+  top: -5px;
+}
+
+.btn:hover::before,
+.btn:hover::after {
+  height: 50%;
+  width: 80%;
+  border-radius: 30px;
+  transition-delay: .3s;
+}
+
+.btn:hover::before {
+  bottom: 0;
+}
+
+.btn:hover::after {
+  top: 0;
+}
+
+.btn::before,
+.btn::after {
+  box-shadow:
+    0 0 5px #15ffff,
+    0 0 10px #15ffff,
+    0 0 20px #15ffff,
+    0 0 30px #15ffff;
 }
