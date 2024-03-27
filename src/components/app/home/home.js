@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IoMdSettings } from "react-icons/io";
 import SettingsItems from './settingsItems';
 import HowToPlayModal from './howToPlayModal';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
     const [showSettings, setShowSettings] = useState(false)
@@ -30,7 +31,7 @@ const HomePage = () => {
                     </div>
 
                     {/* Title and Description */}
-                    <h1 class="text1 text-[35px] sm:text-[45px] md:text-[50px]">
+                    <h1 className="text1 text-[35px] sm:text-[45px] md:text-[50px]">
                         Teach Me To Count !
                     </h1>
                     <p className="text2 text-center text-[18px] sm:text-[20px] md:text-[22px] text-gray-200 mb-[80px]">
@@ -39,9 +40,13 @@ const HomePage = () => {
 
                     {/* All buttons */}
                     <div className="w-full mx-auto  gap-3 flex items-center justify-center flex-col-reverse sm:flex-row">
-                        <button class="btn" onClick={() => setIsModalOpen(true)}><a href="#">How to play</a></button>
-                        <button class="btn"><a href="#">Play</a></button>
-                        <button class="btn"><a href="#">Log In</a></button>
+                        <button className="btn" onClick={() => setIsModalOpen(true)}><span>How to play</span></button>
+                        <Link to='/play'>
+                            <button className="btn"><span >Play</span></button>
+                        </Link>
+                        <Link to='/auth'>
+                            <button className="btn"><span>Log In</span></button>
+                        </Link>
                     </div>
 
                     {/* Today's Date  */}
