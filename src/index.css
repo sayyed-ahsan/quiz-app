@@ -79,10 +79,6 @@ body {
   width: 100%;
 }
 
-video img {
-  max-width: 100%;
-}
-
 .app {
   background-color: rgba(149, 234, 255, 0.206);
   max-width: 1250px;
@@ -94,14 +90,32 @@ video img {
   position: relative;
   width: 100%;
   border-radius: 14px;
+  padding: 10px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   font-size: 15px;
   font-weight: 500;
 }
 
+/* 
+.app- {
+  padding: 20px;
+  background-color: rgba(149, 234, 255, 0.206);
+  max-width: 1350px;
+  max-height: 95vh;
+  width: 100%;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: 15px;
+  font-weight: 500;
+} */
+
 .settingDiv {
-  background-color: rgba(255, 255, 255, 0.148);
+  background-color: rgba(155, 155, 155, 0.206);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -124,7 +138,7 @@ video img {
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: rgba(135, 135, 135, 0.281);
+  background-color: rgba(155, 155, 155, 0.206);
   padding: 20px;
   border-radius: 6px;
   backdrop-filter: blur(20px);
@@ -187,7 +201,7 @@ video img {
   padding: 25px 75px;
 }
 
-.btn a {
+.btn span {
   position: absolute;
   left: 0;
   top: 0;
@@ -211,13 +225,13 @@ video img {
   backdrop-filter: blur(15px);
 }
 
-.btn:hover a {
+.btn:hover span {
   letter-spacing: 3px;
-  color: #000000;
+  color: #ffffff;
   font-weight: 600;
 }
 
-.btn a::before {
+.btn span::before {
   content: '';
   position: absolute;
   left: 0;
@@ -229,7 +243,7 @@ video img {
   transition: all .5s ease-out;
 }
 
-.btn:hover a::before {
+.btn:hover span::before {
   transform: skewX(40deg) translateX(120%);
 }
 

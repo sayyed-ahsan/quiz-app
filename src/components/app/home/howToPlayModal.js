@@ -11,7 +11,7 @@ const HowToPlayModal = ({ isOpen, onClose, children }) => {
             <div className="howToPlayModalDiv p-5 rounded-lg shadow-lg">
 
                 {/* modal close button  */}
-                <IoClose onClick={onClose} className='hover:bg-gray-400 rounded-full text-white text-[28px] absolute top-[7px] right-[7px]' />
+                <IoClose onClick={onClose} className='hover:bg-white/20 p-[3px] rounded-full text-white text-[30px] absolute top-[7px] right-[7px]' />
 
                 {/* body part */}
                 <p className='text-white text-[25px]'>How To Play</p>
