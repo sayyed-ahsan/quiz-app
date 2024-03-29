@@ -34,9 +34,9 @@ function Clock({ time }) {
     return (
         <div className="displayedTime">
 
-            <h1 className='text-center text-green-500 text-[20px] mb-2'>
+            <h1 className='text-center text-green-300 text-[20px]  font-semibold pt-3'>
                 <span className='text-center text-white text-[22px]'>
-                    Quiz Time :{' '}
+                    Time Remain :{' '}
                 </span>
                 {format(time)}
             </h1>

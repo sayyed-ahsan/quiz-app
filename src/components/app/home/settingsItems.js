@@ -9,14 +9,17 @@ const SettingsItems = ({ setShowSettings }) => {
         { id: 3, title: 'Questions ?', linkText: 'FAQ', href: '/faq' }
     ];
     return (
-        <div className='settingDiv w-[290px] sm:w-[350px]'>
-            <IoClose onClick={() => setShowSettings(false)} className='hover:bg-white/20 p-[3px] rounded-full text-white text-[30px] absolute top-[7px] right-[7px]' />
-            <p className='text-center text-white text-[16px] sm:text-[18px]'>SETTING</p>
+        <div className='setting-div z-100 px-2 pb-3 absolute w-[290px] top-[30px] right-[30px] rounded-[8px] sm:w-[350px]'>
+            <IoClose
+                onClick={() => setShowSettings(false)}
+                className='hover:bg-black/40 duration-100 p-[3px] rounded-full text-white text-[30px] absolute top-[7px] right-[7px] cursor-pointer'
+            />
+            <p className='text-center text-white text-[16px] sm:text-[18px] mt-3 font-bold'>SETTING</p>
 
             {infoSections.map((section) => (
                 <div
                     key={section.id}
-                    className='text-white text-[16px] sm:text-[18px] px-[15px] py-[10px] bg-white/10 rounded-[4px] mt-[15px] flex justify-between'
+                    className='text-white text-[16px] sm:text-[18px] px-[15px] py-[10px] bg-black/10 hover:bg-black/30 rounded-[4px] mt-[15px] flex justify-between font-semibold'
                 >
                     <p>{section.title}</p>
                     <Link to={section.href}>
