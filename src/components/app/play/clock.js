@@ -18,27 +18,14 @@ const ClockTimer = ({ count, running, setCount }) => {
         </div>
     );
 };
-
 export default ClockTimer;
 
-
 function Clock({ time }) {
-    const format = (time) => {
-        let seconds = time % 60;
-        let minutes = Math.floor(time / 60);
-        minutes = minutes.toString().length === 1 ? "0" + minutes : minutes;
-        seconds = seconds.toString().length === 1 ? "0" + seconds : seconds;
-        return minutes + ' min ' + ' : ' + seconds + ' sec';
-    };
 
     return (
-        <div className="displayedTime">
-
-            <h1 className='text-center text-green-300 text-[20px]  font-semibold pt-3'>
-                <span className='text-center text-white text-[22px]'>
-                    Time Remain :{' '}
-                </span>
-                {format(time)}
+        <div className='flex justify-center'>
+            <h1 className='w-[60px] h-[60px] mt-2 rounded-full border-2 border-white text-center text-white text-[20px]  font-semibold pt-3'>
+                {time}
             </h1>
         </div>
     );

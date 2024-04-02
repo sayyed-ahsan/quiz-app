@@ -3,6 +3,7 @@ import { IoMdSettings } from "react-icons/io";
 import SettingsItems from './settingsItems';
 import HowToPlayModal from './howToPlayModal';
 import { Link } from 'react-router-dom';
+import { AiTwotonePlayCircle } from 'react-icons/ai';
 
 const HomePage = () => {
     const [showSettings, setShowSettings] = useState(false)
@@ -57,7 +58,7 @@ const HomePage = () => {
                             <button
                                 class="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-black hover:bg-white/0 bg-white hover:text-white duration-200"
                             >
-                                Play
+                                <AiTwotonePlayCircle className='inline mb-[3px] text-[19px] ml-[-11px]' />        Play
                             </button>
                         </Link>
                     </div>
