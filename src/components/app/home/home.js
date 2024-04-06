@@ -43,20 +43,20 @@ const HomePage = () => {
                     <div className="w-full mx-auto  gap-3 flex items-center justify-center flex-col-reverse sm:flex-row">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            class="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
+                            className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
                         >
                             How To Play
                         </button>
                         <Link to='/auth'>
                             <button
-                                class="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
+                                className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
                             >
                                 Log In
                             </button>
                         </Link>
                         <Link to='/play'>
                             <button
-                                class="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-black hover:bg-white/0 bg-white hover:text-white duration-200"
+                                className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-black hover:bg-white/0 bg-white hover:text-white duration-200"
                             >
                                 <AiTwotonePlayCircle className='inline mb-[3px] text-[19px] ml-[-11px]' />        Play
                             </button>
