@@ -5,6 +5,7 @@ import '@splidejs/splide/dist/css/splide.min.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import ClockTimer from './clock';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.min.css';
+import Congratulation from './congratulation';
 
 const Play = () => {
 
@@ -14,7 +15,11 @@ const Play = () => {
     const [questions, setQuestions] = useState();
     const [questionIndex, setQuestionIndex] = useState(0);
     const [questionIndex2, setQuestionIndex2] = useState(questionIndex + 1);
-    const [givenAnswerIndex, setGivenAnswerIndex] = useState(0);
+    const [tryNumber, setTryNumber] = useState(0);
+    const [givenAnswerIndex1, setGivenAnswerIndex1] = useState(0);
+    const [givenAnswerIndex2, setGivenAnswerIndex2] = useState(0);
+    const [givenAnswerIndex3, setGivenAnswerIndex3] = useState(0);
+    const [showRightAns, setShowRightAns] = useState(false);
     const [answerChecking, setAnswerChecking] = useState(false);
     const [count, setCount] = useState(0);
     const [running, setRunning] = useState(false);
@@ -41,16 +46,15 @@ const Play = () => {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const data = await response.json();
-                    if (!showQus) {
-                        setQuestions(data);
-                        setQuestionIndex(UserObject.quesIndex)
-                        if (UserObject.quesIndex === 0) {
-                            handleCountdown(data.durationInSecs)
+                    if (UserObject?.quizCompleted) {
+                        setShowResult(true)
+                    }
+                    else {
+                        if (!showQus) {
+                            setQuestions(data);
+                            setQuestionIndex(UserObject.quesIndex)
+                            setQuizStart(true)
                         }
-                        else {
-                            handleCountdown(0)
-                        }
-                        setQuizStart(true)
                     }
                 } catch (error) {
                     console.error("Could not fetch the data", error);
@@ -71,14 +75,16 @@ const Play = () => {
                             name: "user",
                             quesIndex: 0,
                             matchPlayed: 0,
-                            point: 0,
+                            quizCompleted: false,
+                            point1: 0,
+                            point2: 0,
+                            point3: 0,
                             dateStored: new Date().toISOString()
                         };
                         localStorage.setItem('user', JSON.stringify(userObject));
                         setQuestions(data);
                         setQuestionIndex(0)
-                        // handleCountdown(data?.durationInSecs)
-                        handleCountdown(6)
+                        handleCountdown(data?.durationInSecs)
                         setQuizStart(true)
                     }
                 } catch (error) {
@@ -99,18 +105,26 @@ const Play = () => {
 
     const changeQuestion = () => {
         setTimeout(() => {
+            setGivenAnswerIndex1(0)
+            setGivenAnswerIndex2(0)
+            setGivenAnswerIndex3(0)
             goToRight()
             setQuestionIndex(questionIndex + 1)
             setAnswerChecking(false)
-
-        }, 2000);
+            setShowRightAns(false)
+        }, 1000);
     }
+
     const finalUpdate = () => {
         setTimeout(() => {
+            setGivenAnswerIndex1(0)
+            setGivenAnswerIndex2(0)
+            setGivenAnswerIndex3(0)
             setShowResult(true)
             setAnswerChecking(false)
             setShowQus(false)
-        }, 1500);
+            setShowRightAns(false)
+        }, 1000);
     }
 
     const singleQuestionAnswerCheck = (userAnswer) => {
@@ -125,46 +139,143 @@ const Play = () => {
                     name: "user",
                     quesIndex: 0,
                     matchPlayed: UserObject.matchPlayed + 1,
-                    point: UserObject.point + 1,
+                    quizCompleted: true,
+                    point1: UserObject.point1,
+                    point2: UserObject.point2,
+                    point3: tryNumber === 0 && 3 || tryNumber === 1 && 2,
                     dateStored: UserObject.dateStored
                 };
                 localStorage.setItem('user', JSON.stringify(userObject));
+                setShowRightAns(true)
+                setTryNumber(0)
                 finalUpdate()
             }
             else {
-                let userObject = {
-                    name: "user",
-                    quesIndex: 0,
-                    matchPlayed: UserObject.matchPlayed + 1,
-                    point: UserObject.point - 1,
-                    dateStored: UserObject.dateStored
-                };
-                localStorage.setItem('user', JSON.stringify(userObject));
-                finalUpdate()
+                if (tryNumber === 0 || tryNumber === 1) {
+                    setTryNumber(tryNumber + 1)
+                    let userObject = {
+                        name: "user",
+                        quesIndex: 0,
+                        matchPlayed: UserObject.matchPlayed,
+                        quizCompleted: true,
+                        point1: UserObject.point1,
+                        point2: UserObject.point2,
+                        point3: tryNumber === 0 && 2 || tryNumber === 1 && 1,
+                        dateStored: UserObject.dateStored
+                    };
+                    localStorage.setItem('user', JSON.stringify(userObject));
+                }
+                else if (tryNumber === 2) {
+                    let userObject = {
+                        name: "user",
+                        quesIndex: 0,
+                        matchPlayed: 1,
+                        quizCompleted: true,
+                        point1: UserObject.point1,
+                        point2: UserObject.point2,
+                        point3: 0,
+                        dateStored: UserObject.dateStored
+                    };
+                    localStorage.setItem('user', JSON.stringify(userObject));
+                    setTryNumber(0)
+                    finalUpdate()
+                    setShowRightAns(true)
+                }
             }
         }
         else {
             if (userAnswer === `${questions?.game?.questions[questionIndex]?.corr_ans}`) {
-                let userObject = {
-                    name: "user",
-                    quesIndex: questionIndex + 1,
-                    matchPlayed: 0,
-                    point: UserObject.point + 1,
-                    dateStored: UserObject.dateStored
-                };
-                localStorage.setItem('user', JSON.stringify(userObject));
+                if (questionIndex === 0) {
+                    let userObject = {
+                        name: "user",
+                        quesIndex: questionIndex + 1,
+                        matchPlayed: 0,
+                        quizCompleted: false,
+                        point1: tryNumber === 0 && 3 || tryNumber === 1 && 2 || tryNumber === 2 && 1,
+                        point2: UserObject.point2,
+                        point3: UserObject.point3,
+                        dateStored: UserObject.dateStored
+                    };
+                    localStorage.setItem('user', JSON.stringify(userObject));
+                }
+                else {
+                    let userObject = {
+                        name: "user",
+                        quesIndex: questionIndex + 1,
+                        matchPlayed: 0,
+                        quizCompleted: false,
+                        point1: UserObject.point1,
+                        point2: tryNumber === 0 && 3 || tryNumber === 1 && 2 || tryNumber === 2 && 1,
+                        point3: UserObject.point3,
+                        dateStored: UserObject.dateStored
+                    };
+                    localStorage.setItem('user', JSON.stringify(userObject));
+                }
+                setShowRightAns(true)
                 changeQuestion()
+                setTryNumber(0)
             }
             else {
-                let userObject = {
-                    name: "user",
-                    quesIndex: questionIndex + 1,
-                    matchPlayed: 0,
-                    point: UserObject.point - 1,
-                    dateStored: UserObject.dateStored
-                };
-                localStorage.setItem('user', JSON.stringify(userObject));
-                changeQuestion()
+                if (tryNumber === 0 || tryNumber === 1) {
+                    setTryNumber(tryNumber + 1)
+                    if (questionIndex === 0) {
+                        let userObject = {
+                            name: "user",
+                            quesIndex: UserObject.quesIndex,
+                            matchPlayed: 0,
+                            quizCompleted: false,
+                            point1: tryNumber === 0 && 2 || tryNumber === 1 && 1,
+                            point2: UserObject.point2,
+                            point3: UserObject.point3,
+                            dateStored: UserObject.dateStored
+                        };
+                        localStorage.setItem('user', JSON.stringify(userObject));
+                    }
+                    else {
+                        let userObject = {
+                            name: "user",
+                            quesIndex: UserObject.quesIndex,
+                            matchPlayed: 0,
+                            quizCompleted: false,
+                            point1: UserObject.point1,
+                            point2: tryNumber === 0 && 2 || tryNumber === 1 && 1,
+                            point3: UserObject.point3,
+                            dateStored: UserObject.dateStored
+                        };
+                        localStorage.setItem('user', JSON.stringify(userObject));
+                    }
+                }
+                else {
+                    if (questionIndex === 0) {
+                        let userObject = {
+                            name: "user",
+                            quesIndex: UserObject.quesIndex,
+                            matchPlayed: 0,
+                            quizCompleted: false,
+                            point1: 0,
+                            point2: UserObject.point2,
+                            point3: UserObject.point3,
+                            dateStored: UserObject.dateStored
+                        };
+                        localStorage.setItem('user', JSON.stringify(userObject));
+                    }
+                    else {
+                        let userObject = {
+                            name: "user",
+                            quesIndex: UserObject.quesIndex,
+                            matchPlayed: 0,
+                            quizCompleted: false,
+                            point1: UserObject.point1,
+                            point2: 0,
+                            point3: UserObject.point3,
+                            dateStored: UserObject.dateStored
+                        };
+                        localStorage.setItem('user', JSON.stringify(userObject));
+                    }
+                    setTryNumber(0)
+                    changeQuestion()
+                    setShowRightAns(true)
+                }
             }
         }
     }
@@ -179,7 +290,7 @@ const Play = () => {
                         {/* timer  */}
                         <ClockTimer {...{ count, running, setCount }} />
 
-                        <div className='max-w-[700px] max-h-[700px] mx-auto mt-4 p-2'>
+                        <div className='max-w-[600px] max-h-[600px] mx-auto mt-4 p-2'>
                             {/* Questions Image */}
                             <InnerImageZoom
                                 src={questions?.game?.pic_url}
@@ -195,18 +306,18 @@ const Play = () => {
                                     <p className='text-white text-[15px] sm:text-[20px] font-semibold'>
                                         Watch this Picture carefully!
                                     </p>
-                                    <div class="relative flex flex-col items-center group inline">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white">
+                                    <div className="relative flex flex-col items-center group inline">
+                                        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white">
                                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                                         </svg>
-                                        <div class="absolute bottom-0 flex w-[300px] flex-col items-center hidden mb-6 group-hover:flex">
-                                            <span class="relative z-10 p-3 text-[16px] text-white rounded-[6px] bg-[#4548e6] border-2 border-[#f7fdff9a]">All the Questions of the Quiz will be based on this Picture.</span>
-                                            <div class="w-3 h-3 -mt-2 rotate-45 bg-black"></div>
+                                        <div className="absolute bottom-0 flex w-[300px] flex-col items-center hidden mb-6 group-hover:flex">
+                                            <span className="relative z-10 p-3 text-[16px] text-white rounded-[6px] bg-[#4548e6] border-2 border-[#f7fdff9a]">All the Questions of the Quiz will be based on this Picture.</span>
+                                            <div className="w-3 h-3 -mt-2 rotate-45 bg-black"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <button
-                                    class="rounded-full min-w-[120px] text-[16px] sm:text-[20px] sm:min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
+                                    className="rounded-full min-w-[120px] text-[16px] sm:text-[20px] sm:min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
                                     onClick={() => setCount(0)}
                                 >
                                     Skip <BsSkipForwardFill className='inline ml-2' />
@@ -247,7 +358,9 @@ const Play = () => {
                                         {!answerChecking ?
                                             <div
                                                 className='border-[2px] border-white pl-[20px] py-3 mb-4 rounded-[12px] text-white hover:bg-white/20 duration-200'
-                                                onClick={() => { singleQuestionAnswerCheck(answer); setGivenAnswerIndex(index) }}
+                                                onClick={() => {
+                                                    singleQuestionAnswerCheck(answer); setGivenAnswerIndex1(answer)
+                                                }}
                                             >
                                                 <p className='cursor-pointer font-bold text-[18px]' >
                                                     <span className='font-semibold mr-2'>
@@ -262,13 +375,17 @@ const Play = () => {
                                             </div>
                                             :
                                             <>
-                                                <div
+                                                <div onClick={() => {
+                                                    singleQuestionAnswerCheck(answer);
+                                                    { tryNumber === 1 && setGivenAnswerIndex2(answer) }
+                                                    { tryNumber === 2 && setGivenAnswerIndex3(answer) }
+                                                }}
                                                     className={`pl-[20px] py-3 mb-4 rounded-[12px] border-[2px]  
                                                    ${`${questions?.game?.questions[questionIndex]?.corr_ans}` === answer
                                                             ?
-                                                            'border-[#05ff3b] text-white  bg-[#00ff622f]'
+                                                            `${showRightAns ? 'border-[#05ff3b] text-white  bg-[#00ff622f]' : ' text-white'}`
                                                             :
-                                                            `${index === givenAnswerIndex ?
+                                                            `${(answer === givenAnswerIndex1 || answer === givenAnswerIndex2 || answer === givenAnswerIndex3) ?
                                                                 'border-[#ff0000] text-white  bg-[#ff00002f]'
                                                                 :
                                                                 'border-[2px] border-white text-white'
@@ -293,12 +410,14 @@ const Play = () => {
                             </SplideSlide>
                             <SplideSlide>
                                 {/* Question Options  */}
-                                {questions?.game?.questions[questionIndex2].answers.map((answer, index) =>
+                                {questions?.game?.questions[questionIndex].answers.map((answer, index) =>
                                     <div key={answer} className='mr-2'>
                                         {!answerChecking ?
                                             <div
                                                 className='border-[2px] border-white pl-[20px] py-3 mb-4 rounded-[12px] text-white hover:bg-white/20 duration-200'
-                                                onClick={() => { singleQuestionAnswerCheck(answer); setGivenAnswerIndex(index) }}
+                                                onClick={() => {
+                                                    singleQuestionAnswerCheck(answer); setGivenAnswerIndex1(answer)
+                                                }}
                                             >
                                                 <p className='cursor-pointer font-bold text-[18px]' >
                                                     <span className='font-semibold mr-2'>
@@ -313,16 +432,20 @@ const Play = () => {
                                             </div>
                                             :
                                             <>
-                                                <div
-                                                    className={`pl-[20px] py-3 mb-4 rounded-[12px] border-[2px] text-white 
-                    ${`${questions?.game?.questions[questionIndex]?.corr_ans}` === answer
+                                                <div onClick={() => {
+                                                    singleQuestionAnswerCheck(answer);
+                                                    { tryNumber === 1 && setGivenAnswerIndex2(answer) }
+                                                    { tryNumber === 2 && setGivenAnswerIndex3(answer) }
+                                                }}
+                                                    className={`pl-[20px] py-3 mb-4 rounded-[12px] border-[2px]  
+                                                   ${`${questions?.game?.questions[questionIndex]?.corr_ans}` === answer
                                                             ?
-                                                            'border-[#05ff3b] text-white   bg-[#00ff622f]'
+                                                            `${showRightAns ? 'border-[#05ff3b] text-white  bg-[#00ff622f]' : ' text-white'}`
                                                             :
-                                                            `${index === givenAnswerIndex ?
+                                                            `${(answer === givenAnswerIndex1 || answer === givenAnswerIndex2 || answer === givenAnswerIndex3) ?
                                                                 'border-[#ff0000] text-white  bg-[#ff00002f]'
                                                                 :
-                                                                'border-[2px] border-white '
+                                                                'border-[2px] border-white text-white'
                                                             }`
                                                         } duration-100`}
                                                 >
@@ -345,25 +468,8 @@ const Play = () => {
                         </Splide>
                     </div>
                 }
-                {showResult &&
-                    <div className='max-w-[420px] md:max-w-[550px] p-6 mx-auto text-white'>
-                        <p className='text-center font-semibold text-[30px] mb-4'>Congratulation !</p>
-                        <div className='flex items-center justify-between'>
-                            <div className='min-w-200px '>
-                                <p className='text-[30px] font-semibold text-center'>3</p>
-                                <p className='text-[20px] font-semibold'>Played</p>
-                            </div>
-                            <div className='min-w-200px '>
-                                <p className='text-[30px] font-semibold text-center'>90%</p>
-                                <p className='text-[20px] font-semibold'>Win %</p>
-                            </div>
-                            <div className='min-w-200px '>
-                                <p className='text-[30px] font-semibold text-center'>1</p>
-                                <p className='text-[20px] font-semibold'>Current Streak</p>
-                            </div>
-                        </div>
-                    </div>
-                }
+
+                {showResult && <Congratulation />}
             </div>
         </div >
     );
