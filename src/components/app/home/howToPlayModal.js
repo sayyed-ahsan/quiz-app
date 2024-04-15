@@ -3,28 +3,35 @@ import { IoClose } from 'react-icons/io5';
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
 const HowToPlayModal = ({ isOpen, onClose }) => {
-    const [like, setLike] = useState('')
+    const [like, setLike] = useState('');
+
     if (!isOpen) return null;
 
     return (
-        <div className="fixed bg-black/40 inset-0 flex justify-center items-center p-2">
-            <div className="max-h-[500px] max-w-[500px] p-5 rounded-lg shadow-lg relative bg-[#4548e6] overflow-hidden">
-                {/* modal close button  */}
-                <IoClose onClick={onClose} className='hover:bg-white/20 p-[3px] rounded-full text-white text-[30px] absolute top-[7px] right-[7px]' />
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <IoClose
+                    onClick={onClose}
+                    className="modal-close"
+                    aria-label="Close modal"
+                />
 
-                {/* body part */}
-                <p className='text-white text-[25px] sm:text-[30px] font-bold mb-3'>How To Play ?</p>
-                <p className='text-gray-100 text-[13px] sm:text-[15px] max-h-[365px] overflow-y-auto'>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam pariatur, cumque alias reiciendis porro cupiditate vero atque quis eligendi accusamus doloremque, eius maiores nam eaque facere voluptatem, quam neque doloribus saepe possimus dicta! Possimus nisi corrupti cupiditate officiis vero similique nesciunt libero, voluptate, praesentium in quia quaerat qui, pariatur neque quisquam. Totam atque incidunt mollitia, laudantium vel explicabo quibusdam alias enim, rerum ut necessitatibus temporibus assumenda? Magnam eveniet unde quisquam, quo dolore porro earum quasi molestiae saepe veniam, repellendus repudiandae nobis deleniti nemo. Adipisci libero iste similique laudantium debitis illum itaque et quia deleniti expedita sequi vero mollitia, consectetur consequuntur voluptatem ipsa quidem molestiae quo veniam quod inventore corporis. Nesciunt vel aut,
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam pariatur, cumque alias reiciendis porro cupiditate vero atque quis eligendi accusamus doloremque, eius maiores nam eaque facere voluptatem, quam neque doloribus saepe possimus dicta! Possimus nisi corrupti cupiditate officiis vero similique nesciunt libero, voluptate, praesentium in quia quaerat qui, pariatur neque quisquam. Totam atque incidunt mollitia, laudantium vel explicabo quibusdam alias enim, rerum ut necessitatibus temporibus assumenda? Magnam eveniet unde quisquam, quo dolore porro earum quasi molestiae saepe veniam, repellendus repudiandae nobis deleniti nemo. Adipisci libero iste similique laudantium debitis illum itaque et quia deleniti expedita sequi vero mollitia, consectetur consequuntur voluptatem ipsa quidem molestiae quo veniam quod inventore corporis. Nesciunt vel aut,
+                <p className='modal-title'>How To Play ?</p>
+                <p className='modal-body'>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis animi, tempora eius repellendus porro totam dolorum non sunt facere suscipit impedit ullam qui libero natus aperiam illum debitis praesentium excepturi assumenda ipsum amet, eligendi blanditiis consectetur quae! Doloremque, quasi? Voluptatum exercitationem natus cupiditate nostrum pariatur, quis sapiente. Itaque eius iusto minus quod reprehenderit fugit pariatur ipsum exercitationem! Ex dolores est ratione aliquam ut, iure repudiandae minima quia, hic culpa, minus error odio. Temporibus mollitia nulla reprehenderit voluptatem id natus, earum iure eaque saepe qui, ut pariatur tenetur, expedita quidem corrupti velit. Ipsa molestiae aut illo sint delectus corporis neque libero!
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis animi, tempora eius repellendus porro totam dolorum non sunt facere suscipit impedit ullam qui libero natus aperiam illum debitis praesentium excepturi assumenda ipsum amet, eligendi blanditiis consectetur quae! Doloremque, quasi? Voluptatum exercitationem natus cupiditate nostrum pariatur, quis sapiente. Itaque eius iusto minus quod reprehenderit fugit pariatur ipsum exercitationem! Ex dolores est ratione aliquam ut, iure repudiandae minima quia, hic culpa, minus error odio. Temporibus mollitia nulla reprehenderit voluptatem id natus, earum iure eaque saepe qui, ut pariatur tenetur, expedita quidem corrupti velit. Ipsa molestiae aut illo sint delectus corporis neque libero!
                 </p>
 
-                {/* Feedback section  */}
-                <div className='text-white text-[13px] sm:text-[15px] flex gap-3 text-end absulate bottom-[10px] right-[100px] mt-4'>
-                    <p className='font-semibold'>Did you find it help full ?</p>
-
-                    <AiFillLike onClick={() => setLike('like')} className={`text-[20px] ${like === 'like' && 'text-blue-500'}`} />
-                    <AiFillDislike onClick={() => setLike('disLike')} className={`text-[20px] ${like === 'disLike' && 'text-blue-500'}`} />
+                <div className='modal-feedback'>
+                    <p className='font-semibold'>Did you find it helpful?</p>
+                    <AiFillLike
+                        onClick={() => setLike('like')}
+                        className={`feedback-icon ${like === 'like' ? 'active' : ''}`}
+                    />
+                    <AiFillDislike
+                        onClick={() => setLike('disLike')}
+                        className={`feedback-icon ${like === 'disLike' ? 'active' : ''}`}
+                    />
                 </div>
             </div>
         </div>

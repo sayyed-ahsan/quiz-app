@@ -16,9 +16,9 @@ const Auth = ({ user }) => {
     }, [])
     return (
         <>
-            <text>
-                Loading
-            </text>
+            <p className='text-[30px] text-black text-center'>
+                Loading....
+            </p>
         </>
     );
 };
