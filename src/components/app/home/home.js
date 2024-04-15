@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoMdSettings } from "react-icons/io";
 import SettingsItems from './settingsItems';
 import HowToPlayModal from './howToPlayModal';
 import { Link } from 'react-router-dom';
 import { AiTwotonePlayCircle } from 'react-icons/ai';
+import { Authenticator } from '@aws-amplify/ui-react';
 
 const HomePage = () => {
     const [showSettings, setShowSettings] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userLogIn, setIsUserLogIn] = useState(false);
+    useEffect(() => {
+        if (localStorage.getItem('userLogIn') === 'true') {
+            setIsUserLogIn(true)
+        }
+    }, [])
     return (
-        <div className='bg-white'>
+        <div>
             <div className='w-full rounded-[6px] sm:w-[660px] md:w-[700px] lg:w-[890px] xl:w-[1000px] mx-auto bg-[#4548e6] relative'>
 
                 {/* Settings button  */}
@@ -47,13 +54,33 @@ const HomePage = () => {
                         >
                             How To Play
                         </button>
-                        <Link to='/auth'>
-                            <button
-                                className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
-                            >
-                                Log In
-                            </button>
-                        </Link>
+                        <>
+                            {userLogIn ? <>
+                                <Authenticator>
+                                    {({ signOut, user }) => (
+                                        <button
+                                            className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
+                                            onClick={() => {
+                                                localStorage.setItem('userLogIn', false)
+                                                signOut()
+                                                setIsUserLogIn(false)
+                                            }}
+                                        >
+                                            Log Out
+                                        </button>
+                                    )}
+                                </Authenticator>
+                            </>
+                                :
+                                <Link to='/auth'>
+                                    <button
+                                        className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-white hover:bg-white hover:text-black duration-200"
+                                    >
+                                        Log In
+                                    </button>
+                                </Link>}
+                        </>
+
                         <Link to='/play'>
                             <button
                                 className="rounded-full min-w-[180px] font-semibold py-[10px] border-2 border-white text-black hover:bg-white/0 bg-white hover:text-white duration-200"
@@ -71,9 +98,7 @@ const HomePage = () => {
             </div>
 
             {/* modal  */}
-            <HowToPlayModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <p className='text-white text-[26px]'></p>
-            </HowToPlayModal>
+            <HowToPlayModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>
     );
 };

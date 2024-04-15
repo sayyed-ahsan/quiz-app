@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Amplify } from 'aws-amplify';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import config from '../../../aws-exports';
+import { useNavigate } from 'react-router-dom';
+Amplify.configure(config);
 
-const Auth = () => {
+const Auth = ({ user }) => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (user) {
+            navigate("/")
+            localStorage.setItem('userLogIn', true)
+        }
+    }, [])
     return (
-        <div className='app'>
-
-        </div>
+        <>
+            <text>
+                Loading
+            </text>
+        </>
     );
 };
 
-export default Auth;
+export default withAuthenticator(Auth, { socialProviders: ['google'] });
