@@ -13,12 +13,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.setting-div {
-  z-index: 1;
-  background: #4548e6;
-  border: 1px solid #f7fdff3f;
-}
-
 .rotate-icon {
   transform: rotate(-60deg);
   transition: transform 0.5s ease;
@@ -65,5 +59,278 @@ body {
 
   50% {
     letter-spacing: 20%;
+  }
+}
+
+
+.home-main-div {
+  width: 100%;
+  border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #4548e6;
+  position: relative;
+}
+
+.flex-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.logo-container {
+  overflow: hidden;
+  height: 60px;
+  background-color: white;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.logo-image {
+  height: 70px;
+  border-radius: 50%;
+}
+
+.header {
+  color: white;
+  font-size: 35px;
+  /* Default size */
+}
+
+.date-display {
+  margin-top: 2.5rem;
+  color: white;
+  font-weight: 600;
+}
+
+.button-container {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+
+  /* Assuming sm breakpoint is 640px */
+  .button-container {
+    flex-direction: row;
+  }
+}
+
+.button {
+  border-radius: 9999px;
+  /* Ensures fully rounded corners */
+  min-width: 180px;
+  font-weight: 600;
+  padding: 10px 0;
+  border: 2px solid white;
+  color: white;
+  background: transparent;
+  transition: background-color 200ms, color 200ms;
+}
+
+.button:hover {
+  background-color: white;
+  color: black;
+}
+
+.special-button {
+  color: black;
+  background-color: white;
+}
+
+.special-button:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.play-btn-icon {
+  font-size: 19px;
+  display: inline;
+  margin-bottom: 4px;
+  margin-left: -11px;
+}
+
+.setting-div {
+  z-index: 100;
+  padding: 0 0.5rem 0.75rem;
+  position: absolute;
+  width: 290px;
+  top: 30px;
+  right: 30px;
+  border-radius: 8px;
+  background: #4548e6;
+  border: 1px solid #f7fdff3f;
+}
+
+@media (min-width: 640px) {
+
+  /* Assuming sm breakpoint is 640px */
+  .setting-div {
+    width: 350px;
+  }
+}
+
+.close-icon {
+  background-color: transparent;
+  transition: background-color 100ms;
+  padding: 3px;
+  border-radius: 9999px;
+  /* fully rounded */
+  color: white;
+  font-size: 30px;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  cursor: pointer;
+}
+
+.close-icon:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.setting-text {
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  margin-top: 0.75rem;
+  font-weight: bold;
+}
+
+@media (min-width: 640px) {
+  .setting-text {
+    font-size: 18px;
+  }
+}
+
+.settings-icon {
+  color: white;
+  font-size: 30px;
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+
+.setting-section {
+  color: white;
+  font-size: 16px;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.setting-section:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 640px) {
+  .setting-section {
+    font-size: 18px;
+  }
+}
+
+.link-text {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+@media (min-width: 640px) {
+
+  /* sm */
+  .header {
+    font-size: 45px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  /* md */
+  .header {
+    font-size: 50px;
+  }
+}
+
+.paragraph {
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  /* Default size */
+  margin-bottom: 80px;
+}
+
+@media (min-width: 640px) {
+
+  /* sm */
+  .paragraph {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  /* md */
+  .paragraph {
+    font-size: 22px;
+  }
+}
+
+/* Handling the <br> tag visibility for responsiveness */
+.br-hidden {
+  display: none;
+}
+
+@media (min-width: 640px) {
+
+  /* sm */
+  .br-hidden {
+    display: block;
+  }
+}
+
+@media (min-width: 640px) {
+
+  /* sm */
+  .home-main-div {
+    width: 660px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  /* md */
+  .home-main-div {
+    width: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+
+  /* lg */
+  .home-main-div {
+    width: 890px;
+  }
+}
+
+@media (min-width: 1280px) {
+
+  /* xl */
+  .home-main-div {
+    width: 1000px;
   }
 }
