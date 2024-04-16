@@ -280,7 +280,7 @@ const Play = () => {
 
     return (
         <div>
-            <div className='w-full rounded-[6px] sm:w-[660px] md:w-[700px] lg:w-[890px] xl:w-[1000px] mx-auto bg-[#4548e6] relative   min-h-screen'>
+            <div className='w-full rounded-[6px] sm:w-[660px] md:w-[700px] lg:w-[890px] xl:w-[1000px] mx-auto relative min-h-screen'>
                 {quizStart &&
                     <>
                         {/* timer  */}

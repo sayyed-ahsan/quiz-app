@@ -42,9 +42,9 @@ const HomePage = () => {
                         Teach Me To Count!
                     </h1>
                     <p class="paragraph text2">
-                        Get 3 chances to guess the right answers.
+                        Get 3 Chances To Guess The Right Answers.
                         <br class="br-hidden" />{' '}
-                        Learn counting now...!
+                        Learn Counting Now...!
                     </p>
 
                     {/* All buttons */}
@@ -79,7 +79,6 @@ const HomePage = () => {
 
                         <Link to='/play'>
                             <button className="button special-button">
-                                <AiTwotonePlayCircle className='play-btn-icon' />
                                 Play
                             </button>
                         </Link>

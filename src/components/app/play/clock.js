@@ -24,7 +24,7 @@ function Clock({ time }) {
 
     return (
         <div className='flex justify-center'>
-            <h1 className='w-[60px] h-[60px] mt-2 rounded-full border-2 border-white text-center text-white text-[20px]  font-semibold pt-3'>
+            <h1 className='timer-display'>
                 {time}
             </h1>
         </div>
