@@ -8,13 +8,11 @@ import 'react-inner-image-zoom/lib/InnerImageZoom/styles.min.css';
 import Congratulation from './congratulation';
 
 const Play = () => {
-
     const splideRef = useRef();
     const [quizStart, setQuizStart] = useState(false);
     const [showQus, setShowQus] = useState(false);
     const [questions, setQuestions] = useState();
     const [questionIndex, setQuestionIndex] = useState(0);
-    const [questionIndex2, setQuestionIndex2] = useState(questionIndex + 1);
     const [tryNumber, setTryNumber] = useState(0);
     const [givenAnswerIndex1, setGivenAnswerIndex1] = useState(0);
     const [givenAnswerIndex2, setGivenAnswerIndex2] = useState(0);
@@ -281,10 +279,8 @@ const Play = () => {
     }
 
     return (
-
-        <div className='bg-white'>
-            <div className='w-full rounded-[6px] sm:w-[660px] md:w-[700px] lg:w-[890px] xl:w-[1000px] mx-auto bg-[#4548e6] relative   min-h-screen'>
-
+        <div>
+            <div className='w-full rounded-[6px] sm:w-[660px] md:w-[700px] lg:w-[890px] xl:w-[1000px] mx-auto relative min-h-screen'>
                 {quizStart &&
                     <>
                         {/* timer  */}
