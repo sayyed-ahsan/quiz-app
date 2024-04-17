@@ -23,9 +23,9 @@ export default ClockTimer;
 function Clock({ time }) {
 
     return (
-        <div className='flex justify-center'>
+        <div className='timer-div flex justify-center'>
             <h1 className='timer-display'>
-                {time}
+                {time}s
             </h1>
         </div>
     );
