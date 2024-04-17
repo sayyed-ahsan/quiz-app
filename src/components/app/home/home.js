@@ -18,6 +18,7 @@ const HomePage = () => {
     return (
         <div>
             <div className='home-main-div'>
+
                 {/* Settings button  */}
                 <IoMdSettings
                     onClick={() => setShowSettings(!showSettings)}
