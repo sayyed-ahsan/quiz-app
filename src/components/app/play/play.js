@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BsSkipForwardFill } from "react-icons/bs";
 import { BsExclamationCircle } from "react-icons/bs";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
@@ -137,6 +136,7 @@ const Play = () => {
             setShowRightAns(false)
             setShowGood(false)
             setShowNextTime(false)
+            setTryNumber(0)
         }, 1000);
     }
 
@@ -149,6 +149,7 @@ const Play = () => {
             setAnswerChecking(false)
             setShowQus(false)
             setShowRightAns(false)
+            setTryNumber(0)
         }, 1000);
     }
 
@@ -206,9 +207,8 @@ const Play = () => {
                     };
                     localStorage.setItem('UserGamePlay', JSON.stringify(userObject));
                     setShowRightAns(true)
-                    setTryNumber(0)
                     finalUpdate()
-                    if (tryNumber === 0 || tryNumber === 1) {
+                    if (tryNumber === 0 || tryNumber === 1 || tryNumber === 2) {
                         setShowGood(true)
                     }
                 }
@@ -242,7 +242,6 @@ const Play = () => {
                             timestamp: timestamp
                         };
                         localStorage.setItem('UserGamePlay', JSON.stringify(userObject));
-                        setTryNumber(0)
                         finalUpdate()
                         setShowNextTime(true)
                     }
@@ -277,8 +276,7 @@ const Play = () => {
                     localStorage.setItem('UserGamePlay', JSON.stringify(userObject));
                     setShowRightAns(true)
                     changeQuestion()
-                    setTryNumber(0)
-                    if (tryNumber === 0 || tryNumber === 1) {
+                    if (tryNumber === 0 || tryNumber === 1 || tryNumber === 2) {
                         setShowGood(true)
                     }
                 }
@@ -337,7 +335,6 @@ const Play = () => {
                             timestamp: timestamp
                         };
                         localStorage.setItem('UserGamePlay', JSON.stringify(userObject));
-                        setTryNumber(0)
                         changeQuestion()
                         setShowNextTime(true)
                     }
@@ -347,12 +344,11 @@ const Play = () => {
 
 
     }
-
+    console.log(tryNumber)
     return (
-        <div className={!showQus ? 'home-main-div' : ''}>
-
+        <>
             {quizStart &&
-                <>
+                <div className='home-main-div'>
                     <BsExclamationCircle
                         className='exclamation-icon'
                         onClick={() => setIsModalOpen(true)}
@@ -379,8 +375,7 @@ const Play = () => {
                             zoomPreload={true}
                         />
                     </div>
-                </>
-            }
+                </div>}
 
             {/* {all Question  */}
             {(showQus) &&
@@ -389,7 +384,9 @@ const Play = () => {
                         <button
                             className='good-job-btn'
                         >
-                            Good Job
+                            {tryNumber === 0 && 'Amazing'}
+                            {tryNumber === 1 && 'Good Job'}
+                            {tryNumber === 2 && 'Phew!'}
                         </button>
                     }
                     {showNextTime &&
@@ -401,10 +398,10 @@ const Play = () => {
                     }
 
                     {/* Question */}
-                    <p className=' text-[28px] text-start font-bold mt-3'>
+                    <p className='text-[28px] text-start font-bold mt-3'>
                         Q{questionIndex + 1}.
                     </p>
-                    <p className=' text-[28px] text-start font-bold mt-2 mb-[50px]'>
+                    <p className='text-[28px] text-start font-bold mt-2 mb-[50px]'>
                         {questions?.game?.questions[questionIndex].question}
                     </p>
 
@@ -450,7 +447,8 @@ const Play = () => {
                                                 { tryNumber === 2 && setGivenAnswerIndex3(answer) }
                                             }}
                                                 className={`px-[25px] py-3 mb-7 rounded-full text-black
-                           ${`${questions?.game?.questions[questionIndex]?.corr_ans}` === answer
+                                                ${`${questions?.game?.questions[questionIndex]?.corr_ans}`
+                                                        === answer
                                                         ?
                                                         `${showRightAns ? 'option-shadow border-[1px] border-[#06BF66] bg-[#06BF66] text-white' : 'border-[1px] border-black'}`
                                                         :
@@ -510,7 +508,8 @@ const Play = () => {
                                                 { tryNumber === 2 && setGivenAnswerIndex3(answer) }
                                             }}
                                                 className={`px-[25px] py-3 mb-7 rounded-full text-black
-                           ${`${questions?.game?.questions[questionIndex]?.corr_ans}` === answer
+                                                ${`${questions?.game?.questions[questionIndex]?.corr_ans}`
+                                                        === answer
                                                         ?
                                                         `${showRightAns ? 'option-shadow border-[1px] border-[#06BF66] bg-[#06BF66] text-white' : 'border-[1px] border-black'}`
                                                         :
@@ -545,7 +544,8 @@ const Play = () => {
                 </div>
             }
             {showResult && <Congratulation />}
-        </div >
+        </>
+
     );
 };
 

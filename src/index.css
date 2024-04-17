@@ -295,7 +295,7 @@ body {
 
   /* sm */
   .home-main-div {
-    width: 660px;
+    width: 100%;
   }
 }
 
@@ -303,7 +303,7 @@ body {
 
   /* md */
   .home-main-div {
-    width: 700px;
+    width: 100%;
   }
 }
 

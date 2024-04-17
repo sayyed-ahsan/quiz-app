@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import SettingsItems from './settingsItems';
 import HowToPlayModal from './howToPlayModal';
 import { Link } from 'react-router-dom';
-import { AiTwotonePlayCircle } from 'react-icons/ai';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { IoMdSettings } from 'react-icons/io';
 
@@ -10,7 +9,12 @@ const HomePage = () => {
     const [showSettings, setShowSettings] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userLogIn, setIsUserLogIn] = useState(false);
+    const [result, setResult] = useState()
+
     useEffect(() => {
+        let UserObject = localStorage.getItem('UserGamePlay')
+        UserObject = JSON.parse(UserObject)
+        setResult(UserObject)
         if (localStorage.getItem('userLogIn') === 'true') {
             setIsUserLogIn(true)
         }
@@ -29,9 +33,9 @@ const HomePage = () => {
 
                 <div className="flex-container">
                     {/* Logo  */}
-                    <div class="logo-container">
+                    <div className="logo-container">
                         <img
-                            class="logo-image"
+                            className="logo-image"
                             src="https://i.ibb.co/JkPGn5d/noun-counting-154887-Photoroom.png"
                             alt="logo of quiz app"
                         />
@@ -39,21 +43,24 @@ const HomePage = () => {
 
 
                     {/* Title and Description */}
-                    <h1 class="header text1">
+                    <h1 className="header text1">
                         Teach Me To Count!
                     </h1>
-                    <p class="paragraph text2">
+                    <p className="paragraph text2">
                         Get 3 Chances To Guess The Right Answers.
-                        <br class="br-hidden" />{' '}
+                        <br className="br-hidden" />{' '}
                         Learn Counting Now...!
                     </p>
 
                     {/* All buttons */}
                     <div className="button-container">
-                        <button onClick={() => setIsModalOpen(true)} className="button">
-                            How To Play
-                        </button>
-
+                        {result?.game_data?.game?.status === 'COMPLETED' ?
+                            ''
+                            :
+                            <button onClick={() => setIsModalOpen(true)} className="button">
+                                How To Play
+                            </button>
+                        }
                         {userLogIn ? <>
                             <Authenticator>
                                 {({ signOut, user }) => (
@@ -80,7 +87,7 @@ const HomePage = () => {
 
                         <Link to='/play'>
                             <button className="button special-button">
-                                Play
+                                {result?.game_data?.game?.status === 'COMPLETED' ? 'See Stats' : 'Play'}
                             </button>
                         </Link>
                     </div>
