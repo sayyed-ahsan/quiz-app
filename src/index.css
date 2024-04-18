@@ -25,41 +25,8 @@ body {
 
 
 .text1 {
-  color: rgb(255, 255, 255);
   font-weight: 700;
-  animation-name: text;
-  animation-duration: 2.4s;
   z-index: 0;
-}
-
-
-@keyframes text {
-  0% {
-    color: rgb(88, 86, 86);
-  }
-
-  50% {
-    letter-spacing: 8px;
-  }
-
-}
-
-.text2 {
-  animation-name: text2;
-  animation-duration: 2.9s;
-  z-index: 0;
-  font-weight: 600;
-}
-
-
-@keyframes text2 {
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    letter-spacing: 20%;
-  }
 }
 
 
@@ -98,6 +65,7 @@ body {
 .header {
   color: rgb(0, 0, 0);
   font-size: 29px;
+  font-weight: 500;
 }
 
 .date-display {
@@ -137,8 +105,8 @@ body {
 }
 
 .button:hover {
-  background-color: white;
-  color: black;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
 .special-button {

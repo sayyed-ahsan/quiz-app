@@ -344,9 +344,8 @@ const Play = () => {
 
 
     }
-    console.log(tryNumber)
     return (
-        <>
+        <div className={showQus ? 'bg-withe' : `${showResult ? 'bg-white' : 'bg-[#E3E3E1]'}`}>
             {quizStart &&
                 <div className='home-main-div'>
                     <BsExclamationCircle
@@ -544,8 +543,7 @@ const Play = () => {
                 </div>
             }
             {showResult && <Congratulation />}
-        </>
-
+        </div>
     );
 };
 
