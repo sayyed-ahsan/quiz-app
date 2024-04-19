@@ -7,6 +7,8 @@ import ClockTimer from './clock';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.min.css';
 import Congratulation from './congratulation';
 import ExclamationModal from './exclamationModal';
+import toast, { Toaster } from 'react-hot-toast';
+import { motion } from 'framer-motion';
 
 const Play = () => {
     const splideRef = useRef();
@@ -21,11 +23,10 @@ const Play = () => {
     const [givenAnswerIndex3, setGivenAnswerIndex3] = useState(0);
     const [showRightAns, setShowRightAns] = useState(false);
     const [answerChecking, setAnswerChecking] = useState(false);
-    const [showGood, setShowGood] = useState(false);
-    const [showNextTime, setShowNextTime] = useState(false);
     const [count, setCount] = useState(0);
     const [running, setRunning] = useState(false);
     const [showResult, setShowResult] = useState(false);
+    const [animate, setAnimate] = useState(false);
 
     const handleCountdown = (seconds) => {
         setCount(seconds);
@@ -35,6 +36,69 @@ const Play = () => {
     const goToRight = () => {
         splideRef.current.splide.go('>');
     };
+
+    const pictureSeen = (skip) => {
+        if (skip) {
+            let UserGamePlayObject = {
+                game_data: {
+                    game: {
+                        gameState: [],
+                        hasSeenPicture: 1,
+                        currentQuestionIndex: 0,
+                        currentScore: 0,
+                        id: questions?.id,
+                        status: "IN_PROGRESS",
+                        timestamps: {
+                            lastCompleted: 0,
+                            lastPlayed: 0
+                        }
+                    },
+                    stats: {
+                        gamesPlayed: 0,
+                        currentStreak: 0,
+                        gamesWon: 0,
+                        AvgScorePercentage: 0,
+                    }
+                },
+                puzzle_id: questions?.id,
+                timestamp: Date.now()
+            };
+
+            localStorage.setItem('UserGamePlay', JSON.stringify(UserGamePlayObject));
+        }
+        else {
+            setTimeout(() => {
+                let UserGamePlayObject = {
+                    game_data: {
+                        game: {
+                            gameState: [],
+                            hasSeenPicture: 1,
+                            currentQuestionIndex: 0,
+                            currentScore: 0,
+                            id: questions?.id,
+                            status: "IN_PROGRESS",
+                            timestamps: {
+                                lastCompleted: 0,
+                                lastPlayed: 0
+                            }
+                        },
+                        stats: {
+                            gamesPlayed: 0,
+                            currentStreak: 0,
+                            gamesWon: 0,
+                            AvgScorePercentage: 0,
+                        }
+                    },
+                    puzzle_id: questions?.id,
+                    timestamp: Date.now()
+                };
+
+                localStorage.setItem('UserGamePlay', JSON.stringify(UserGamePlayObject));
+            }, 10000);
+        }
+
+    }
+
 
     useEffect(() => {
 
@@ -54,10 +118,19 @@ const Play = () => {
                     }
                     else {
                         if (!showQus) {
-                            setQuestions(data);
-                            setQuestionIndex(UserGamePlayObject.game_data.game.currentQuestionIndex)
-                            console.log(UserGamePlayObject.game_data.game.currentQuestionIndex)
-                            setQuizStart(true)
+                            if (UserGamePlayObject.game_data.game.hasSeenPicture === 0) {
+                                setQuestions(data);
+                                setQuestionIndex(0)
+                                handleCountdown(data?.durationInSecs)
+                                setQuizStart(true)
+                                pictureSeen(false)
+                            }
+                            else {
+                                setQuestions(data);
+                                setQuestionIndex(UserGamePlayObject.game_data.game.currentQuestionIndex)
+                                console.log(UserGamePlayObject.game_data.game.currentQuestionIndex)
+                                setQuizStart(true)
+                            }
                         }
                     }
                 } catch (error) {
@@ -82,7 +155,7 @@ const Play = () => {
                             game_data: {
                                 game: {
                                     gameState: [],
-                                    hasSeenPicture: 1,
+                                    hasSeenPicture: 0,
                                     currentQuestionIndex: 0,
                                     currentScore: 0,
                                     id: data.id,
@@ -106,8 +179,10 @@ const Play = () => {
                         localStorage.setItem('UserGamePlay', JSON.stringify(UserGamePlayObject));
                         setQuestions(data);
                         setQuestionIndex(0)
-                        handleCountdown(data?.durationInSecs)
+                        // handleCountdown(data?.durationInSecs)
+                        handleCountdown(3600)
                         setQuizStart(true)
+                        pictureSeen(false)
                     }
                 } catch (error) {
                     console.error("Could not fetch the data", error);
@@ -125,8 +200,15 @@ const Play = () => {
         }
     }
 
+    const animation = () => {
+        setTimeout(() => {
+            setAnimate(false)
+        }, 2000);
+    }
     const changeQuestion = () => {
         setTimeout(() => {
+            setAnimate(true)
+            animation()
             setGivenAnswerIndex1(0)
             setGivenAnswerIndex2(0)
             setGivenAnswerIndex3(0)
@@ -134,10 +216,9 @@ const Play = () => {
             setQuestionIndex(questionIndex + 1)
             setAnswerChecking(false)
             setShowRightAns(false)
-            setShowGood(false)
-            setShowNextTime(false)
             setTryNumber(0)
-        }, 1000);
+
+        }, 1500);
     }
 
     const finalUpdate = () => {
@@ -152,6 +233,19 @@ const Play = () => {
             setTryNumber(0)
         }, 1000);
     }
+
+    const getMessage = () => {
+        switch (tryNumber) {
+            case 0:
+                return 'Amazing 😄';
+            case 1:
+                return 'Good Job 👍';
+            case 2:
+                return 'Phew! 😅';
+            default:
+                return '';
+        }
+    };
 
     const singleQuestionAnswerCheck = (userAnswer) => {
 
@@ -209,7 +303,17 @@ const Play = () => {
                     setShowRightAns(true)
                     finalUpdate()
                     if (tryNumber === 0 || tryNumber === 1 || tryNumber === 2) {
-                        setShowGood(true)
+                        const message = getMessage();
+                        toast(message,
+                            {
+                                duration: 1000,
+                                style: {
+                                    borderRadius: '99px',
+                                    background: '#06BF66',
+                                    color: '#fff',
+                                },
+                            }
+                        )
                     }
                 }
                 else {
@@ -243,7 +347,17 @@ const Play = () => {
                         };
                         localStorage.setItem('UserGamePlay', JSON.stringify(userObject));
                         finalUpdate()
-                        setShowNextTime(true)
+                        toast('Try again next time',
+                            {
+                                duration: 1000,
+                                icon: '😢',
+                                style: {
+                                    borderRadius: '99px',
+                                    background: '#CD0000',
+                                    color: '#fff',
+                                },
+                            }
+                        )
                     }
                 }
             }
@@ -254,7 +368,7 @@ const Play = () => {
                             game: {
                                 gameState: [],
                                 hasSeenPicture: hasSeenPicture,
-                                currentQuestionIndex: currentQuestionIndex,
+                                currentQuestionIndex: currentQuestionIndex + 1,
                                 currentScore: newCurrentScore,
                                 id: id,
                                 status: "IN_PROGRESS",
@@ -277,7 +391,17 @@ const Play = () => {
                     setShowRightAns(true)
                     changeQuestion()
                     if (tryNumber === 0 || tryNumber === 1 || tryNumber === 2) {
-                        setShowGood(true)
+                        const message = getMessage();
+                        toast(message,
+                            {
+                                duration: 1000,
+                                style: {
+                                    borderRadius: '99px',
+                                    background: '#06BF66',
+                                    color: '#fff',
+                                },
+                            }
+                        )
                     }
                 }
                 else {
@@ -336,7 +460,17 @@ const Play = () => {
                         };
                         localStorage.setItem('UserGamePlay', JSON.stringify(userObject));
                         changeQuestion()
-                        setShowNextTime(true)
+                        toast('Try again next time',
+                            {
+                                duration: 1000,
+                                icon: '😢',
+                                style: {
+                                    borderRadius: '99px',
+                                    background: '#CD0000',
+                                    color: '#fff',
+                                },
+                            }
+                        )
                     }
                 }
             }
@@ -344,6 +478,7 @@ const Play = () => {
 
 
     }
+
     return (
         <div className={showQus ? 'bg-withe' : `${showResult ? 'bg-white' : 'bg-[#E3E3E1]'}`}>
             {quizStart &&
@@ -361,7 +496,10 @@ const Play = () => {
 
                     <button
                         className='skip-btn'
-                        onClick={() => setCount(0)}
+                        onClick={() => {
+                            setCount(0)
+                            pictureSeen(true)
+                        }}
                     >
                         Skip
                     </button>
@@ -379,30 +517,20 @@ const Play = () => {
             {/* {all Question  */}
             {(showQus) &&
                 <div className='max-w-[420px] md:max-w-[550px] p-6 mx-auto bg-white h-screen'>
-                    {showGood &&
-                        <button
-                            className='good-job-btn'
-                        >
-                            {tryNumber === 0 && 'Amazing'}
-                            {tryNumber === 1 && 'Good Job'}
-                            {tryNumber === 2 && 'Phew!'}
-                        </button>
-                    }
-                    {showNextTime &&
-                        <button
-                            className='next-time-btn'
-                        >
-                            Try again next time
-                        </button>
-                    }
 
                     {/* Question */}
                     <p className='text-[28px] text-start font-bold mt-3'>
                         Q{questionIndex + 1}.
                     </p>
-                    <p className='text-[28px] text-start font-bold mt-2 mb-[50px]'>
-                        {questions?.game?.questions[questionIndex].question}
-                    </p>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1 }}
+                    >
+                        <p className='text-[28px] text-start font-bold mt-2 mb-[50px]'>
+                            {questions?.game?.questions[questionIndex].question}
+                        </p>
+                    </motion.div>
 
                     <Splide
                         options={{
@@ -412,137 +540,81 @@ const Play = () => {
                             wheel: false,
                             keyboard: false,
                             pagination: false,
-                            speed: '1000',
+                            speed: '1200',
                         }}
                         ref={splideRef}
-
                     >
                         <SplideSlide>
                             {questions?.game?.questions[questionIndex].answers.map((answer, index) =>
-                                <div key={answer} className='mr-2'>
-                                    {!answerChecking ?
-                                        <div
-                                            className='px-[25px] py-3 mb-7 rounded-full border-[1px] border-black text-black cursor-pointer'
-                                            onClick={() => {
-                                                singleQuestionAnswerCheck(answer); setGivenAnswerIndex1(answer)
-                                            }}
-                                        >
-                                            <p className='font-bold text-[18px]' >
-                                                <span className='mr-2'>
-                                                    {index === 0 && ' A.  '}
-                                                    {index === 1 && ' B.  '}
-                                                    {index === 2 && ' C.  '}
-                                                    {index === 3 && ' D.  '}
-                                                </span>
-                                                {'  '}
-                                                {answer}
-                                            </p>
-                                        </div>
-                                        :
-                                        <>
-                                            <div onClick={() => {
-                                                singleQuestionAnswerCheck(answer);
-                                                { tryNumber === 1 && setGivenAnswerIndex2(answer) }
-                                                { tryNumber === 2 && setGivenAnswerIndex3(answer) }
-                                            }}
-                                                className={`px-[25px] py-3 mb-7 rounded-full text-black
-                                                ${`${questions?.game?.questions[questionIndex]?.corr_ans}`
-                                                        === answer
-                                                        ?
-                                                        `${showRightAns ? 'option-shadow border-[1px] border-[#06BF66] bg-[#06BF66] text-white' : 'border-[1px] border-black'}`
-                                                        :
-                                                        `${(answer === givenAnswerIndex1 || answer === givenAnswerIndex2 || answer === givenAnswerIndex3) ?
-                                                            'option-shadow border-[1px] border-[#CD0000] bg-[#CD0000] text-white'
-                                                            :
-                                                            `${showRightAns ?
-                                                                'border-[2px] border-[#A9A9A9] text-[#A9A9A9]'
-                                                                :
-                                                                'border-[1px] border-black'}`
-                                                        }`
-                                                    }
-                                                    duration-100`}
+                                <motion.div
+                                    key={index}
+                                    animate={animate ? { x: -500, transition: { duration: index * 0.5 } } : { x: 0, transition: { duration: 0 } }}
+                                >
+                                    <div key={answer} className='mr-2'>
+                                        {!answerChecking ?
+                                            <div
+                                                className='px-[25px] py-3 mb-7 rounded-full border-[1px] border-black text-black cursor-pointer'
+                                                onClick={() => {
+                                                    singleQuestionAnswerCheck(answer); setGivenAnswerIndex1(answer)
+                                                }}
                                             >
                                                 <p className='font-bold text-[18px]' >
                                                     <span className='mr-2'>
-                                                        {index === 0 && 'A.'}
-                                                        {index === 1 && 'B.'}
-                                                        {index === 2 && 'C.'}
-                                                        {index === 3 && 'D.'}
+                                                        {index === 0 && ' A.  '}
+                                                        {index === 1 && ' B.  '}
+                                                        {index === 2 && ' C.  '}
+                                                        {index === 3 && ' D.  '}
                                                     </span>
                                                     {'  '}
                                                     {answer}
                                                 </p>
                                             </div>
-                                        </>
-                                    }
-                                </div>
-                            )}
-                        </SplideSlide>
-                        <SplideSlide>
-                            {questions?.game?.questions[questionIndex].answers.map((answer, index) =>
-                                <div key={answer} className='mr-2'>
-                                    {!answerChecking ?
-                                        <div
-                                            className='px-[25px] py-3 mb-7 rounded-full border-[1px] border-black text-black cursor-pointer'
-                                            onClick={() => {
-                                                singleQuestionAnswerCheck(answer); setGivenAnswerIndex1(answer)
-                                            }}
-                                        >
-                                            <p className='font-bold text-[18px]' >
-                                                <span className='mr-2'>
-                                                    {index === 0 && ' A.  '}
-                                                    {index === 1 && ' B.  '}
-                                                    {index === 2 && ' C.  '}
-                                                    {index === 3 && ' D.  '}
-                                                </span>
-                                                {'  '}
-                                                {answer}
-                                            </p>
-                                        </div>
-                                        :
-                                        <>
-                                            <div onClick={() => {
-                                                singleQuestionAnswerCheck(answer);
-                                                { tryNumber === 1 && setGivenAnswerIndex2(answer) }
-                                                { tryNumber === 2 && setGivenAnswerIndex3(answer) }
-                                            }}
-                                                className={`px-[25px] py-3 mb-7 rounded-full text-black
-                                                ${`${questions?.game?.questions[questionIndex]?.corr_ans}`
-                                                        === answer
-                                                        ?
-                                                        `${showRightAns ? 'option-shadow border-[1px] border-[#06BF66] bg-[#06BF66] text-white' : 'border-[1px] border-black'}`
-                                                        :
-                                                        `${(answer === givenAnswerIndex1 || answer === givenAnswerIndex2 || answer === givenAnswerIndex3) ?
-                                                            'option-shadow border-[1px] border-[#CD0000] bg-[#CD0000] text-white'
+                                            :
+                                            <>
+                                                <div onClick={() => {
+                                                    singleQuestionAnswerCheck(answer);
+                                                    { tryNumber === 1 && setGivenAnswerIndex2(answer) }
+                                                    { tryNumber === 2 && setGivenAnswerIndex3(answer) }
+                                                }}
+                                                    className={`px-[25px] py-3 mb-7 rounded-full text-black
+                                         ${`${questions?.game?.questions[questionIndex]?.corr_ans}`
+                                                            === answer
+                                                            ?
+                                                            `${showRightAns ? 'option-shadow border-[1px] border-[#06BF66] bg-[#06BF66] text-white' : 'border-[1px] border-black'}`
                                                             :
-                                                            `${showRightAns ?
-                                                                'border-[2px] border-[#A9A9A9] text-[#A9A9A9]'
+                                                            `${(answer === givenAnswerIndex1 || answer === givenAnswerIndex2 || answer === givenAnswerIndex3) ?
+                                                                'option-shadow border-[1px] border-[#CD0000] bg-[#CD0000] text-white'
                                                                 :
-                                                                'border-[1px] border-black'}`
-                                                        }`
-                                                    }
-                                                    duration-100`}
-                                            >
-                                                <p className='font-bold text-[18px]' >
-                                                    <span className='mr-2'>
-                                                        {index === 0 && 'A.'}
-                                                        {index === 1 && 'B.'}
-                                                        {index === 2 && 'C.'}
-                                                        {index === 3 && 'D.'}
-                                                    </span>
-                                                    {'  '}
-                                                    {answer}
-                                                </p>
-                                            </div>
-                                        </>
-                                    }
-                                </div>
+                                                                `${showRightAns ?
+                                                                    'border-[2px] border-[#A9A9A9] text-[#A9A9A9]'
+                                                                    :
+                                                                    'border-[1px] border-black'}`
+                                                            }`
+                                                        }
+                                             duration-100`}
+                                                >
+                                                    <p className='font-bold text-[18px]' >
+                                                        <span className='mr-2'>
+                                                            {index === 0 && 'A.'}
+                                                            {index === 1 && 'B.'}
+                                                            {index === 2 && 'C.'}
+                                                            {index === 3 && 'D.'}
+                                                        </span>
+                                                        {'  '}
+                                                        {answer}
+                                                    </p>
+                                                </div>
+                                            </>
+                                        }
+                                    </div>
+                                </motion.div>
                             )}
                         </SplideSlide>
                     </Splide>
                 </div>
             }
             {showResult && <Congratulation />}
+            <Toaster />
         </div>
     );
 };

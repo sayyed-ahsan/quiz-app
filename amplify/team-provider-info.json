@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "quizappf8a156dd": {}
+        "quizappf8a156dd": {},
+        "userPoolGroups": {}
       }
     }
   }
