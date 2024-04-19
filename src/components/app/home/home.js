@@ -20,7 +20,7 @@ const HomePage = () => {
         }
     }, [])
     return (
-        <div>
+        <div className='bg-[#E3E3E1]'>
             <div className='home-main-div'>
 
                 {/* Settings button  */}
@@ -43,10 +43,10 @@ const HomePage = () => {
 
 
                     {/* Title and Description */}
-                    <h1 className="header text1">
+                    <h1 className="header">
                         Teach Me To Count!
                     </h1>
-                    <p className="paragraph text2">
+                    <p className="paragraph">
                         Get 3 Chances To Guess The Right Answers.
                         <br className="br-hidden" />{' '}
                         Learn Counting Now...!

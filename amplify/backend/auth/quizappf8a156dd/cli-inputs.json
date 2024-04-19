@@ -38,9 +38,31 @@
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "triggers": {},
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+      "quizapp"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "hostedUI": false,
+    "authProviders": []
   }
 }
