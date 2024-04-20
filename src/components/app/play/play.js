@@ -179,8 +179,7 @@ const Play = () => {
                         localStorage.setItem('UserGamePlay', JSON.stringify(UserGamePlayObject));
                         setQuestions(data);
                         setQuestionIndex(0)
-                        // handleCountdown(data?.durationInSecs)
-                        handleCountdown(3600)
+                        handleCountdown(data?.durationInSecs)
                         setQuizStart(true)
                         pictureSeen(false)
                     }
